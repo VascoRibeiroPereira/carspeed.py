@@ -140,7 +140,7 @@ rawCapture.truncate(0)
 org_image = image.copy()
 
 if SAVE_CSV:
-    csvfileout = "carspeed_{}.cvs".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
+    csvfileout = "carspeed_{}.csv".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
     record_speed('Date,Day,Time,Speed,Image')
 else:
     csvfileout = ''
