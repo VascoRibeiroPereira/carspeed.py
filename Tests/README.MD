@@ -1,4 +1,4 @@
-##To use this python program in RPI Zero install the OpenCV by this simple method:
+## To use this python program in RPI Zero install the OpenCV by this simple method:
 
 ```
 echo 'deb [trusted=yes] http://dl.bintray.com/yoursunny/PiZero stretch-backports main' |\
