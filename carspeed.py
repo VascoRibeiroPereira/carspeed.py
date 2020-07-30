@@ -55,9 +55,9 @@ def draw_rectangle(event,x,y,flags,param):
         cv2.rectangle(image,(ix,iy),(fx,fy),(0,255,0),2)
         
 # define some constants
-DISTANCE = 76  #<---- enter your distance-to-road value here
+DISTANCE = 95  #<---- enter your distance-to-road value here (feet)
 MIN_SPEED = 0  #<---- enter the minimum speed for saving images
-SAVE_CSV = False  #<---- record the results in .csv format in carspeed_(date).csv
+SAVE_CSV = True  #<---- record the results in .csv format in carspeed_(date).csv #changed from false
 
 THRESHOLD = 15
 MIN_AREA = 175
@@ -119,8 +119,8 @@ prompt = ''
 camera = PiCamera()
 camera.resolution = RESOLUTION
 camera.framerate = FPS
-camera.vflip = True
-camera.hflip = True
+camera.vflip = False # changed from true
+camera.hflip = False # changed from true
 
 rawCapture = PiRGBArray(camera, size=camera.resolution)
 # allow the camera to warm up
@@ -140,7 +140,7 @@ rawCapture.truncate(0)
 org_image = image.copy()
 
 if SAVE_CSV:
-    csvfileout = "carspeed_{}.cvs".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
+    csvfileout = "carspeed_{}.csv".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
     record_speed('Date,Day,Time,Speed,Image')
 else:
     csvfileout = ''
@@ -356,4 +356,3 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
   
 # cleanup the camera and close any open windows
 cv2.destroyAllWindows()
-
