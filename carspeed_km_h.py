@@ -140,8 +140,8 @@ rawCapture.truncate(0)
 org_image = image.copy()
 
 if SAVE_CSV:
-    csvfileout = "carspeed_{}.cvs".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
-    record_speed('Date,Day,Time,Speed')
+    csvfileout = "carspeed_{}.csv".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
+    record_speed('Date,Day,Time,Speed,Direction')
 else:
     csvfileout = ''
 
@@ -306,7 +306,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                         if SAVE_CSV:
                             cap_time = datetime.datetime.now()
                             record_speed(cap_time.strftime("%Y.%m.%d")+','+cap_time.strftime('%A')+','+\
-                               cap_time.strftime('%H:%M')+','+("%.0f" % last_mph))
+                               cap_time.strftime('%H:%M')+','+("%.0f" % last_mph)+','+str(direction))
                     state = SAVING
                 # if the object hasn't reached the end of the monitored area, just remember the speed 
                 # and its last position
