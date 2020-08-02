@@ -56,7 +56,7 @@ def draw_rectangle(event,x,y,flags,param):
         
 # define some constants
 DISTANCE = 30  #<---- enter your distance-to-road value here (meters)
-MIN_SPEED = 0  #<---- enter the minimum speed for saving images
+MIN_SPEED = 10  #<---- enter the minimum speed for saving images
 SAVE_CSV = True  #<---- record the results in .csv format in carspeed_(date).csv #changed from false
 
 THRESHOLD = 15
@@ -65,7 +65,7 @@ BLURSIZE = (15,15)
 IMAGEWIDTH = 640
 IMAGEHEIGHT = 480
 RESOLUTION = [IMAGEWIDTH,IMAGEHEIGHT]
-FOV = 53.5    #<---- Field of view
+FOV = 75.7 #53.5 for the original pi cam    #<---- Field of view
 FPS = 30
 SHOW_BOUNDS = True
 SHOW_IMAGE = True
