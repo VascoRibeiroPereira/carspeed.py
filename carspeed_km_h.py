@@ -59,7 +59,7 @@ DISTANCE = 30  #<---- enter your distance-to-road value here (meters)
 MIN_SPEED = 10  #<---- enter the minimum speed for saving images
 SAVE_CSV = True  #<---- record the results in .csv format in carspeed_(date).csv #changed from false
 
-THRESHOLD = 15
+THRESHOLD = 50
 MIN_AREA = 175
 BLURSIZE = (15,15)
 IMAGEWIDTH = 640
