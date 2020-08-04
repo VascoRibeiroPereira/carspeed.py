@@ -1,3 +1,16 @@
+# Car Speed Detection - carspeed.py (version 3.0)
+
+This program is an adaptation of the version 2.0 with some changes:   
+- Does not record images
+- Records are stored in a `.csv` file
+- The `.csv` file are recorded in Km/h and have the direction of the cars
+- The program will be set to work with the first settings from 8 am to 9 pm (soon to be updated).
+
+Enjoy
+
+
+***   
+
 # Car Speed Detection - carspeed.py (version 2.0)
 
 ## Blog URL

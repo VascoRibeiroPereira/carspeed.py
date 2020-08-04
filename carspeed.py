@@ -17,7 +17,7 @@ def prompt_on_image(txt):
 # calculate speed from pixels and time
 def get_speed(pixels, ftperpixel, secs):
     if secs > 0.0:
-        return ((pixels * ftperpixel)/ secs) * 0.681818  
+        return ((pixels * ftperpixel)/ secs) * 3.6  
     else:
         return 0.0
  
@@ -55,17 +55,17 @@ def draw_rectangle(event,x,y,flags,param):
         cv2.rectangle(image,(ix,iy),(fx,fy),(0,255,0),2)
         
 # define some constants
-DISTANCE = 95  #<---- enter your distance-to-road value here (feet)
-MIN_SPEED = 0  #<---- enter the minimum speed for saving images
+DISTANCE = 30  #<---- enter your distance-to-road value here (meters)
+MIN_SPEED = 10  #<---- enter the minimum speed for saving images
 SAVE_CSV = True  #<---- record the results in .csv format in carspeed_(date).csv #changed from false
 
-THRESHOLD = 15
+THRESHOLD = 50
 MIN_AREA = 175
 BLURSIZE = (15,15)
 IMAGEWIDTH = 640
 IMAGEHEIGHT = 480
 RESOLUTION = [IMAGEWIDTH,IMAGEHEIGHT]
-FOV = 53.5    #<---- Field of view
+FOV = 75.7 #53.5    #<---- Field of view (original commented)
 FPS = 30
 SHOW_BOUNDS = True
 SHOW_IMAGE = True
@@ -81,7 +81,7 @@ RIGHT_TO_LEFT = 2
 # calculate the the width of the image at the distance specified
 frame_width_ft = 2*(math.tan(math.radians(FOV*0.5))*DISTANCE)
 ftperpixel = frame_width_ft / float(IMAGEWIDTH)
-print("Image width in feet {} at {} from camera".format("%.0f" % frame_width_ft,"%.0f" % DISTANCE))
+print("Image width in meters {} at {} from camera".format("%.0f" % frame_width_ft,"%.0f" % DISTANCE))
 
 # state maintains the state of the speed computation process
 # if starts as WAITING
@@ -141,7 +141,7 @@ org_image = image.copy()
 
 if SAVE_CSV:
     csvfileout = "carspeed_{}.csv".format(datetime.datetime.now().strftime("%Y%m%d_%H%M"))
-    record_speed('Date,Day,Time,Speed,Image')
+    record_speed('Date,Day,Time,Speed,Direction')
 else:
     csvfileout = ''
 
@@ -255,7 +255,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
             last_mph = 0
             text_on_image = 'Tracking'
             print(text_on_image)
-            print("x-chg    Secs      MPH  x-pos width")
+            print("x-chg    Secs      KMPH  x-pos width")
         else:
             # compute the lapsed time
             secs = secs_diff(timestamp,initial_time)
@@ -302,11 +302,11 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
                         # use the following image file name if you want to be able to sort the images by speed
                         #imageFilename = "car_at_%02.0f" % last_mph + "_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S") + ".jpg"
                         
-                        cv2.imwrite(imageFilename,image)
+                        #cv2.imwrite(imageFilename,image)
                         if SAVE_CSV:
                             cap_time = datetime.datetime.now()
                             record_speed(cap_time.strftime("%Y.%m.%d")+','+cap_time.strftime('%A')+','+\
-                               cap_time.strftime('%H%M')+','+("%.0f" % last_mph) + ','+imageFilename)
+                               cap_time.strftime('%H:%M')+','+("%.0f" % last_mph)+','+str(direction))
                     state = SAVING
                 # if the object hasn't reached the end of the monitored area, just remember the speed 
                 # and its last position
