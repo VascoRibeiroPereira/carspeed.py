@@ -4,7 +4,17 @@ This program is an adaptation of the version 2.0 with some changes:
 - Does not record images
 - Records are stored in a `.csv` file
 - The `.csv` file are recorded in Km/h and have the direction of the cars
-- The program will be set to work with the first settings from 8 am to 9 pm (soon to be updated).
+- The program runs on RaspberryPi Zero W
+
+## To use this python program in RPi Zero install the OpenCV by this simple method:
+
+ ```
+ echo 'deb [trusted=yes] http://dl.bintray.com/yoursunny/PiZero stretch-backports main' |\
+   sudo tee /etc/apt/sources.list.d/bintray-yoursunny-PiZero.list
+ sudo apt update
+ sudo apt install python3-opencv
+ python3 -c 'import cv2; print(cv2.__version__)'
+ ```
 
 Enjoy
 
