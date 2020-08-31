@@ -1,4 +1,4 @@
-# CarSpeed Version 2.0
+# CarSpeed Version 3.0
 
 # import the necessary packages
 from picamera.array import PiRGBArray
@@ -7,6 +7,7 @@ import time
 import math
 import datetime
 import cv2
+from datetime import date
 
 # place a prompt on the displayed image
 def prompt_on_image(txt):
@@ -59,13 +60,13 @@ DISTANCE = 30  #<---- enter your distance-to-road value here (meters)
 MIN_SPEED = 10  #<---- enter the minimum speed for saving images
 SAVE_CSV = True  #<---- record the results in .csv format in carspeed_(date).csv #changed from false
 
-THRESHOLD = 50
+THRESHOLD = 15 # original is 15 and it works just fine
 MIN_AREA = 175
 BLURSIZE = (15,15)
 IMAGEWIDTH = 640
 IMAGEHEIGHT = 480
 RESOLUTION = [IMAGEWIDTH,IMAGEHEIGHT]
-FOV = 75.7 #53.5    #<---- Field of view (original commented)
+FOV = 75.7 #53.5    #<---- Field of view (original commented) - check your webcam provider
 FPS = 30
 SHOW_BOUNDS = True
 SHOW_IMAGE = True
@@ -162,6 +163,8 @@ while not setup_complete:
 # the monitored area is defined, time to move on
 prompt = "Press 'q' to quit" 
  
+#### Possible if statement here with a time-event?
+
 # since the monitored area's bounding box could be drawn starting 
 # from any corner, normalize the coordinates
  
@@ -198,7 +201,7 @@ print(" monitored_area {}".format(monitored_width * monitored_height))
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
     #initialize the timestamp
     timestamp = datetime.datetime.now()
- 
+
     # grab the raw NumPy array representing the image 
     image = frame.array
  
@@ -230,7 +233,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     # look for motion 
     motion_found = False
     biggest_area = 0
- 
+    
+
     # examine the contours, looking for the largest one
     for c in cnts:
         (x1, y1, w1, h1) = cv2.boundingRect(c)
