@@ -120,8 +120,27 @@ ggplot(data = speed_Analysis,
 ##################################
 ##### IN TEST HERE
 
-carspeed_LtR <- filter(carspeed_Clean, Direction == 1)
-carspeed_RtL <- filter(carspeed_Clean, Direction == 2)
+
+ggplot(data = carspeed_filter, 
+       mapping = aes(x = valid, y = Speed, color = Direction)) + 
+        geom_point(alpha = 1/2) + 
+        geom_smooth(method = "lm") +
+        geom_hline(aes(yintercept = 50))
+
+
+carspeed_filter$Speed > 50
+
+sum(carspeed_filter$Speed > 50)
+length(carspeed_filter$Speed)
+
+sum(carspeed_filter$Speed > 50) * 100 / length(carspeed_filter$Speed) # 94% em incumprimento
+
+
+carspeed_LtR <- filter(carspeed_filter, Direction == 1)
+sum(carspeed_LtR$Speed > 50) * 100 / length(carspeed_LtR$Speed) # 96% em incumprimento
+
+carspeed_RtL <- filter(carspeed_filter, Direction == 2)
+sum(carspeed_RtL$Speed > 50) * 100 / length(carspeed_RtL$Speed) # 91% em incumprimento
 
 
 #carspeed_LtR$valid <- parse_date_time(carspeed_LtR$valid, "Ymd HM", tz="Europe/Lisbon")
