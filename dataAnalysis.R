@@ -4,6 +4,8 @@ library(caret)
 library(ggplot2)
 library(dplyr)
 library(lubridate)
+library(googleVis)
+library(plotly)
 
 ##### IN TEST HERE
 
@@ -98,13 +100,18 @@ Velocidade <- speed_Analysis$meanSpeed
 
 df <- tibble(Data, Direção, Velocidade)
 
-ggplot(data = df, 
+gp <- ggplot(data = df, 
        mapping = aes(x = Data, y = Velocidade, color = Direção)) + 
-        geom_point(alpha = 1/2) + 
-        geom_smooth(method = "lm")
+        geom_point(alpha = 1/2)
+
+gg <- ggplotly(gp)
+gg
 
 ##################################
 ##### IN TEST HERE
+
+gg <- ggplotly(gp)
+
 
 lm_fit <- lm(meanSpeed ~ valid, data=speed_Analysis)
 summary(lm_fit)
@@ -117,8 +124,42 @@ ggplot(data = speed_Analysis,
         geom_line(color='red',data = predicted_df, aes(x=valid, y=speed_pred))
 
 
+#t1 <- gvisTable(speed_Analysis)
+#plot(t1)
+#areachart <- gvisAreaChart(speed_Analysis, "valid", "meanSpeed")
+#plot(areachart)
+#plot(gvisAnnotatedTimeLine(speed_Analysis, "valid", "meanSpeed", idvar = "Direction"))
+myChart <- gvisAnnotationChart(speed_Analysis, "valid", "meanSpeed", 
+                         idvar = "Direction", 
+                         options = list(width = 1000, height = 500))
+
+## Gosto mais desta visualização
+library(plotly)
+plot_ly(speed_Analysis, 
+        x = speed_Analysis$valid, 
+        y = speed_Analysis$meanSpeed, 
+        mode = "markers", 
+        color = speed_Analysis$Direction)
+
 ##################################
 ##### IN TEST HERE
+
+library(plotly)
+plot_ly(car_weather, 
+        x = car_weather$valid, 
+        y = car_weather$meanSpeed,
+        z = car_weather$dwpc,
+        mode = "markers", 
+        color = car_weather$Direction)
+
+plot_ly(car_weather, 
+        y = car_weather$meanSpeed,
+        type = "box", 
+        color = car_weather$Direction)
+
+speedMatrix <- matrix(car_weather$meanSpeed*car_weather$tmpc)
+plot_ly(z= speedMatrix, type="heatmap")
+
 
 carspeed_LtR <- filter(carspeed_Clean, Direction == 1)
 carspeed_RtL <- filter(carspeed_Clean, Direction == 2)
@@ -144,7 +185,7 @@ ggplot(data = carspeed_RtL, mapping = aes(x = valid, y = Speed)) + geom_point(al
 #carspeed_Clean$valid <- as.character(carspeed_Clean$valid)
 
 ## Merging Data
-
-car_weather <- inner_join(WeatherData_Clean, carspeed_Clean, by = "valid")
+WeatherData_Clean$valid <- as.POSIXct(WeatherData_Clean$valid)
+car_weather <- inner_join(speed_Analysis, WeatherData_Clean, by = "valid")
 
 ## Plot to visualise data

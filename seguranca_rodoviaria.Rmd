@@ -15,16 +15,81 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
-summary(cars)
+```{r }
+#Libraries
+library(riem)
+library(caret)
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(googleVis)
+library(plotly)
 ```
 
 ## Including Plots
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r, echo=FALSE}
+## Import Data
+filesList <- list.files("/Users/vascoalbertofiliperibeiro/R/carspeed/RawData")
+
+setwd("/Users/vascoalbertofiliperibeiro/R/carspeed/RawData")
+
+carspeed <- tibble()
+
+for (i in 1:length(filesList)) {
+        tmp<- read.csv(filesList[i])   
+        
+        carspeed <- rbind(tmp, carspeed)
+}
+
+## Clean Data
+
+carspeed$Direction <- as.factor(carspeed$Direction)
+
+carspeed_Clean <- filter(carspeed, Speed < 120 & Speed > 10)
+carspeed_Clean <- carspeed_Clean[,-2]
+
+
+carspeed_Clean <- mutate(carspeed_Clean, valid = paste(Date, Time, sep = " "))
+carspeed_Clean <- carspeed_Clean[,-c(1,2)]
+
+rm(filesList, carspeed, tmp, i)
+
+
+carspeed_Clean$valid <- parse_date_time(carspeed_Clean$valid, "Ymd HM", tz="Europe/Lisbon")
+carspeed_Clean$valid <- round_date(carspeed_Clean$valid, unit = "hour")
+carspeed_filter <- filter(carspeed_Clean, valid >= as.Date("2020-08-03"))
+
+groupedData <- carspeed_filter %>% group_by(valid, Direction)
+speed_Analysis <- groupedData %>% summarise(meanSpeed = mean(Speed))
+
+## Change the numeric factor to a more Human readable format
+
+speed_Analysis$Direction <- as.integer(speed_Analysis$Direction)
+
+for(i in 1:length(speed_Analysis$Direction)) {
+        if (speed_Analysis$Direction[i] == 1) speed_Analysis$Direction[i] <- "Sintra-MemMartins" 
+        else speed_Analysis$Direction[i] <- "MemMartins-Sintra"
+        }
+
+speed_Analysis$Direction <- as.factor(speed_Analysis$Direction)
+
+Data <- speed_Analysis$valid
+Direção <- speed_Analysis$Direction
+Velocidade <- speed_Analysis$meanSpeed
+
+df <- tibble(Data, Direção, Velocidade)
+
+gp <- ggplot(data = df, 
+       mapping = aes(x = Data, y = Velocidade, color = Direção)) + 
+        geom_point(alpha = 1/2)
+
+gg <- ggplotly(gp)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r }
+gg
+```
+
