@@ -1,22 +1,23 @@
 ---
-title: "seguranca_rodoviaria"
+title: "Seguranca Rodoviaria em Mem-Martins"
 author: "Vasco Pereira"
 date: "9/2/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+## Resumo
 
-## R Markdown
+Foram medidas velocidades dos automóveis que circulam na Avenida Almirante Gago Coutinho, que liga Mem-Martins à Portela de Sintra, com recurso a um Raspberry Pi Zero W, uma webcam e um programa Python.
+As velocidades obtidas foram tratadas por métodos de análise exploratória de dados com recurso a programação em R.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+No estudo realizado verificou-se que a velocidade média dos automóveis difere mediante a direcção em que circulam, sendo de XXkm/h no sentido Mem Martins -> Sintra e XXkm/h no sentido Sintra -> Mem Martins.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Em ambos os casos a velocidade é superior ao máximo permitido por lei em zona urbana - 50km/h. É ainda importante referir que esta zona possui duas escolas nas próximidades e um complexo desportivo, piscinas e ciclovia com elevada afluencia de peões.
+
+
+## Bibliotecas
 
 ```{r }
-#Libraries
 library(riem)
 library(caret)
 library(ggplot2)
