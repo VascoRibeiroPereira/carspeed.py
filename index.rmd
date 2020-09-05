@@ -1,7 +1,7 @@
 ---
 title: "Seguranca Rodoviaria em Mem-Martins"
 author: "Vasco Pereira"
-date: "9/2/2020"
+date: "05/09/2020"
 output: html_document
 ---
 
@@ -12,7 +12,7 @@ As velocidades obtidas foram tratadas por métodos de análise exploratória de 
 
 No estudo realizado verificou-se que a velocidade média dos automóveis difere mediante a direcção em que circulam, sendo de 69 km/h no sentido Mem Martins -> Sintra e 87 km/h no sentido Sintra -> Mem Martins.
 
-Em ambos os casos a velocidade é superior ao máximo permitido por lei em zona urbana - 50km/h. É ainda importante referir que esta zona possui duas escolas nas próximidades e um complexo desportivo, piscinas e ciclovia com elevada afluencia de peões.
+Em ambos os casos a velocidade é superior ao máximo permitido por lei em zona urbana - 50km/h. É ainda importante referir que esta zona possui duas escolas nas proximidades e um complexo desportivo, piscinas e ciclovia com elevada afluência de peões.
 
 ## Local das medições
 
@@ -23,7 +23,7 @@ As medições foram feitas num pequeno troço da Avenida Almirante Gago Coutinho
 
 Uma sucinta descrição sobre o hardware utilizado e como instalar o programa `carspeed.py` pode ser encontrada no repositório deste projecto: [VascoRibeiroPereira/carspeed.py](https://github.com/VascoRibeiroPereira/carspeed.py).
 
-O programa utilizado foi adaptado de [gregtinkers/carspeed.py](https://github.com/gregtinkers/carspeed.py), com pequenas alterações no que respeita às distâncias, obtenção de dados em Km/h e inibição da captura de imagens por motivos de eficiencia no espaço limitado do hardware utilizado. As direcções foram também adicionadas à tabela de dados obtidos.
+O programa utilizado foi adaptado de [gregtinkers/carspeed.py](https://github.com/gregtinkers/carspeed.py), com pequenas alterações no que respeita às distâncias, obtenção de dados em Km/h e inibição da captura de imagens por motivos de eficiência no espaço limitado do hardware utilizado. As direcções foram também adicionadas à tabela de dados obtidos.
 
 ## Bibliotecas
 
@@ -59,7 +59,7 @@ for (i in 1:length(filesList)) {
 
 ```
 
-Os dados de vários ficheiros foram importados e unidos numa unica tabela: `carspeed`.   
+Os dados de vários ficheiros foram importados e unidos numa única tabela: `carspeed`.   
 A tabela `carspeed` tem as seguintes características:   
 1. Inicio da obtenção de dados - `r min(levels(carspeed$Date))`   
 2. Fim da obtenção de dados - `r max(levels(carspeed$Date))`   
@@ -68,7 +68,7 @@ A tabela `carspeed` tem as seguintes características:
 
 ## Limpeza dos dados
 
-O conjunto hardware/software utilizados possui algumas limitações no que respeita à detecção de dados, nomeadamente quando há muito trafego nos dois sentidos este pode fazer medições menos correctas. Estes erros traduzem-se em medições com pouco significado (bastante superior a 120 km/h por exemplo), pelo que se excluiram as medições de velocidade superior a 120 km/h e inferiores a 10 km/h.
+O conjunto hardware/software utilizados possui algumas limitações no que respeita à detecção de dados, nomeadamente quando há muito trafego nos dois sentidos este pode fazer medições menos correctas. Estes erros traduzem-se em medições com pouco significado (bastante superior a 120 km/h por exemplo), pelo que se excluíram as medições de velocidade superior a 120 km/h e inferiores a 10 km/h.
 
 ```{r }
 
@@ -139,7 +139,7 @@ A visualização do gráfico torna evidente vários aspectos da circulação aut
 Em números absolutos, na tabela antes de agrupar os dados: `carspeed_filter`, temos `r dim(carspeed_filter)[1]` observações, das quais `r sum(carspeed_filter$Speed>50)` são superiores a 50 km/h.   
 Isto representa `r round(sum(carspeed_filter$Speed>50)*100/dim(carspeed_filter)[1])`% de condutores em excesso de velocidade a cerca de 40 metros de distância de uma passagem de peões.
 
-Análise da velocidade em ambas as direções:
+**Análise da velocidade em ambas as direções:**
 
 #### Mem Martins - Sintra
 ```{r, echo=FALSE }
