@@ -35,7 +35,6 @@ As bibliotecas necessárias para análise de dados em R:
 library(ggplot2) 
 library(dplyr) 
 library(lubridate) 
-library(googleVis)
 library(plotly) 
 
 ```
