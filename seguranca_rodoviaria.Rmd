@@ -155,17 +155,5 @@ summary(filter(df, Direção == 'Sintra-MemMartins')$Velocidade)
 
 ```
 
-Outra visualização interativa dos dados obtidos onde se podem verificar os dados com detalhe ao dia, hora ou mês:
-
-```{r }
-
-myChart <- gvisAnnotationChart(df, "Data", "Velocidade", 
-                         idvar = "Direção", 
-                         options = list(width = 1000, height = 500))
-
-plot(myChart)
-
-```
-
 
 
