@@ -155,5 +155,11 @@ summary(filter(df, Direção == 'Sintra-MemMartins')$Velocidade)
 
 ```
 
+## Conclusão
+
+A velocidade dos carros que circulam na Avenida Almirante Gago Coutinho é excessiva dadas as características da envolvência: presença de escolas, habitações, peões e locais de desporto e lazer.
+Há alguns anos a passadeira foi pintada e evidenciada com refletores coloridos que poderão ter resultado numa descida da velocidade dos automóveis neste local, mas ainda assim são raros os que se mantêm dentro dos limites impostos pela lei.
+
+A presença de lombas poderia ser uma solução para a prevenção de acidentes na área.
 
 
