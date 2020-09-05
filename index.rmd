@@ -1,6 +1,8 @@
 ---
 title: "Seguranca Rodoviaria em Mem-Martins"
-author: "Vasco Pereira"
+author: | 
+        | "Vasco Pereira"
+        | "vascoribeiro.sintra@gmail.com"
 date: "05/09/2020"
 output: html_document
 ---
@@ -24,6 +26,19 @@ As medições foram feitas num pequeno troço da Avenida Almirante Gago Coutinho
 Uma sucinta descrição sobre o hardware utilizado e como instalar o programa `carspeed.py` pode ser encontrada no repositório deste projecto: [VascoRibeiroPereira/carspeed.py](https://github.com/VascoRibeiroPereira/carspeed.py).
 
 O programa utilizado foi adaptado de [gregtinkers/carspeed.py](https://github.com/gregtinkers/carspeed.py), com pequenas alterações no que respeita às distâncias, obtenção de dados em Km/h e inibição da captura de imagens por motivos de eficiência no espaço limitado do hardware utilizado. As direcções foram também adicionadas à tabela de dados obtidos.
+
+### Doações
+
+Se gostar do projecto, partilhe, diga olá, ou faça uma doação por *PayPal*. Pequenos gestos são motivadores para continuar a produzir conteúdos!
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_donations" />
+<input type="hidden" name="business" value="QXHC4SCEGNE9Q" />
+<input type="hidden" name="currency_code" value="EUR" />
+<input type="image" src="https://www.paypalobjects.com/pt_PT/PT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Faça donativos com o botão PayPal" />
+<img alt="" border="0" src="https://www.paypal.com/pt_PT/i/scr/pixel.gif" width="1" height="1" />
+</form>
+
 
 ## Bibliotecas
 
