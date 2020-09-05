@@ -130,7 +130,7 @@ gp <- ggplot(data = df,
 
 gg <- ggplotly(gp)
 
-#gg
+gg
 
 ```
 
