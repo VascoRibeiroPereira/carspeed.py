@@ -10,14 +10,14 @@ output: html_document
 Foram medidas velocidades dos automóveis que circulam na Avenida Almirante Gago Coutinho, que liga Mem-Martins à Portela de Sintra, com recurso a um Raspberry Pi Zero W, uma webcam e um programa Python.
 As velocidades obtidas foram tratadas por métodos de análise exploratória de dados com recurso a programação em R.
 
-No estudo realizado verificou-se que a velocidade média dos automóveis difere mediante a direcção em que circulam, sendo de XXkm/h no sentido Mem Martins -> Sintra e XXkm/h no sentido Sintra -> Mem Martins.
+No estudo realizado verificou-se que a velocidade média dos automóveis difere mediante a direcção em que circulam, sendo de 69 km/h no sentido Mem Martins -> Sintra e 87 km/h no sentido Sintra -> Mem Martins.
 
 Em ambos os casos a velocidade é superior ao máximo permitido por lei em zona urbana - 50km/h. É ainda importante referir que esta zona possui duas escolas nas próximidades e um complexo desportivo, piscinas e ciclovia com elevada afluencia de peões.
 
 ## Local das medições
 
 As medições foram feitas num pequeno troço da Avenida Almirante Gago Coutinho.   
-![Local](~/images/med.JPG)   
+![Local](images/med.JPG)   
 
 ## Hardware e programa carspeed.py
 
@@ -139,16 +139,20 @@ A visualização do gráfico torna evidente vários aspectos da circulação aut
 Em números absolutos, na tabela antes de agrupar os dados: `carspeed_filter`, temos `r dim(carspeed_filter)[1]` observações, das quais `r sum(carspeed_filter$Speed>50)` são superiores a 50 km/h.   
 Isto representa `r round(sum(carspeed_filter$Speed>50)*100/dim(carspeed_filter)[1])`% de condutores em excesso de velocidade a cerca de 40 metros de distância de uma passagem de peões.
 
-Velocidade média em ambas as direções:
+Análise da velocidade em ambas as direções:
 
+#### Mem Martins - Sintra
 ```{r, echo=FALSE }
 
-VelocidadeMédia<- c(round(mean(filter(df, Direção == 'MemMartins-Sintra')$Velocidade)),
-  round(mean(filter(df, Direção == 'Sintra-MemMartins')$Velocidade)))
+summary(filter(df, Direção == 'MemMartins-Sintra')$Velocidade)
 
-Direção <- c("Mem Martins - Sintra", "Sintra - Mem Martins")
+```
 
-knitr::kable(tibble(Direção, VelocidadeMédia))
+#### Sintra - Mem Martins
+```{r, echo=FALSE }
+
+summary(filter(df, Direção == 'Sintra-MemMartins')$Velocidade)
+
 ```
 
 Outra visualização interativa dos dados obtidos onde se podem verificar os dados com detalhe ao dia, hora ou mês:
@@ -162,5 +166,6 @@ myChart <- gvisAnnotationChart(df, "Data", "Velocidade",
 plot(myChart)
 
 ```
+
 
 
