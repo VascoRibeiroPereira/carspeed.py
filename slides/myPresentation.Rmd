@@ -1,0 +1,141 @@
+---
+title: "Vehicle speed analysis"
+author: "Vasco Pereira"
+date: "9/8/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, include = FALSE, message = FALSE)
+```
+
+## Abstract
+
+Drivers that circulate inside cities in Portugal have a maximum speed limit of 50 km/h, but the behaviour is not always in compliance with the law.
+After observing the possibility of high speeds in the road *Avenida Almirante Gago Coutinho* in *Mem-Martins*, *Sintra*, *Portugal*, the vehicle speed was measured with a **Raspberry Pi Zero W** and an exploratory data analysis was performed in **R**.
+It was verified that the vehicles moving from *Mem-Martins* to *Sintra* had a mean speed of **69 km/h** and from *Sintra* to *Mem-Martins* had a mean speed of **87 km/h**
+This road have a pedestrian crossing about 40 meters after the experimental measuring local, and two schools and a sports hall nearby that encourage the presence of many pedestrians in the sidewalk of this road.
+
+## Donations
+
+If you like this project and wish to help me continue developing this kind of projects share, or make a small donation! ;)
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_donations" />
+<input type="hidden" name="business" value="QXHC4SCEGNE9Q" />
+<input type="hidden" name="currency_code" value="EUR" />
+<input type="image" src="https://www.paypalobjects.com/pt_PT/PT/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Faça donativos com o botão PayPal" />
+<img alt="" border="0" src="https://www.paypal.com/pt_PT/i/scr/pixel.gif" width="1" height="1" />
+</form>
+
+
+## Data acquisition
+
+Data was acquired in August 2020.   
+Details of the hardware setup can seen in the repository of this project in [VascoRibeiroPereira/carspeed.py](https://github.com/VascoRibeiroPereira/carspeed.py).   
+
+### Raspberry pi Zero W with webcam   
+![ ](~/R/carspeed/images/hard.jpg)  
+
+___
+
+### Measurement local
+![ ](~/R/carspeed/images/med.jpg)   
+Road *Avenida Almirante Gago Coutinho* in *Mem-Martins*, *Sintra*, *Portugal*.
+
+## Exploratory Data analysis
+
+Detailed information in [Project website](https://vascoribeiropereira.github.io/carspeed.py/).
+
+```{r }
+
+library(ggplot2) 
+library(dplyr) 
+library(lubridate) 
+library(plotly) 
+
+my_wd <- getwd()
+filesList <- list.files("~/R/carspeed/RawData")
+
+setwd("~/R/carspeed/RawData")
+
+carspeed <- tibble()
+for (i in 1:length(filesList)) {
+        tmp<- read.csv(filesList[i])   
+        
+        carspeed <- rbind(tmp, carspeed)
+}
+
+carspeed$Direction <- as.factor(carspeed$Direction)
+carspeed_Clean <- filter(carspeed, Speed < 120 & Speed > 10)
+carspeed_Clean <- carspeed_Clean[,-2]
+carspeed_Clean <- mutate(carspeed_Clean, valid = paste(Date, Time, sep = " "))
+carspeed_Clean <- carspeed_Clean[,-c(1,2)]
+
+carspeed_Clean$valid <- parse_date_time(carspeed_Clean$valid, "Ymd HM", tz="Europe/Lisbon")
+carspeed_Clean$valid <- round_date(carspeed_Clean$valid, unit = "hour")
+
+## As medições foram sistematizadas apenas a partir de dia 2020-08-03
+carspeed_filter <- filter(carspeed_Clean, valid >= as.Date("2020-08-03"))
+
+groupedData <- carspeed_filter %>% group_by(valid, Direction)
+speed_Analysis <- groupedData %>% summarise(meanSpeed = mean(Speed))
+
+
+speed_Analysis$Direction <- as.integer(speed_Analysis$Direction)
+
+for(i in 1:length(speed_Analysis$Direction)) {
+        if (speed_Analysis$Direction[i] == 1) speed_Analysis$Direction[i] <- "Sintra-MemMartins" 
+        else speed_Analysis$Direction[i] <- "MemMartins-Sintra"
+        }
+
+speed_Analysis$Direction <- as.factor(speed_Analysis$Direction)
+
+Date_Measured <- speed_Analysis$valid
+Direction <- speed_Analysis$Direction
+Speed <- speed_Analysis$meanSpeed
+
+df <- tibble(Date_Measured, Direction, Speed)
+
+```
+
+The cleaned data have this appearance:
+```{r, echo = TRUE,  include = TRUE}
+
+knitr::kable(head(df,3))
+
+``` 
+
+## Data Plot
+
+```{r, echo = FALSE, include= TRUE}
+
+gp <- ggplot(data = df, 
+             mapping = aes(x = Date_Measured, y = Speed, color = Direction)) + 
+        geom_point(alpha = 1/2)
+
+gg <- ggplotly(gp)
+
+gg
+
+```
+
+## Data Summary
+
+```{r, echo = TRUE,  include = TRUE, comment="" }
+
+summary(filter(df, Direction == 'MemMartins-Sintra')$Speed)
+
+```
+
+```{r, echo = TRUE,  include = TRUE, comment="" }
+
+summary(filter(df, Direction == 'Sintra-MemMartins')$Speed)
+
+```
+
+## Conclusion
+
+The possibility of high speeds in the road *Avenida Almirante Gago Coutinho* was confirmed with maximum speeds of **117 km/h** which is a crime in this location.   
+The mean speed in both directions are above the permitted velocity - **69 km/h** and **87 km/h**.   
+It is highly recommended the imposition of preventive measures such as speed bumps.   
