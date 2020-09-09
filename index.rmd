@@ -21,6 +21,15 @@ Em ambos os casos a velocidade é superior ao máximo permitido por lei em zona 
 As medições foram feitas num pequeno troço da Avenida Almirante Gago Coutinho.   
 ![ ](images/med.JPG)   
 
+```{r, echo = FALSE }
+library(leaflet)
+my_map <- leaflet() %>% addTiles()
+my_map <- my_map %>% addMarkers(lat=38.798567, lng=-9.353751, popup = "Troço em análise")
+my_map
+
+```
+
+
 ## Hardware e programa carspeed.py
 
 Uma sucinta descrição sobre o hardware utilizado e como instalar o programa `carspeed.py` pode ser encontrada no repositório deste projecto: [VascoRibeiroPereira/carspeed.py](https://github.com/VascoRibeiroPereira/carspeed.py).
